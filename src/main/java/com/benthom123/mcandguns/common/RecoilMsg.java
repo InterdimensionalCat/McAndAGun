@@ -62,10 +62,10 @@ class RecoilHandler implements Runnable {
 
 	@Override
 	public void run() {	
-		PlayerHandler.yawMod = antiYaw;
-		PlayerHandler.pitchMod = antiPitch;
-		PlayerHandler.currentclip = currentclip;
-		PlayerHandler.currentreload = currentreload;
-		PlayerHandler.reloading = reloading;
+		//PlayerHandler.yawMod = antiYaw;
+		//PlayerHandler.pitchMod = antiPitch;
+		//PlayerHandler.currentclip = currentclip;
+		//PlayerHandler.currentreload = currentreload;
+		//PlayerHandler.reloading = reloading;
 	}
 }

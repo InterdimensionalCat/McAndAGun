@@ -15,6 +15,12 @@ public class GunInfoStorage implements IStorage<GunInfo> {
 		tag.putInt("reload", instance.getReload());
 		tag.putBoolean("reloading", instance.isReloading());
 		
+		
+		tag.putFloat("recoil", instance.getRecoil());
+		tag.putFloat("yaw", instance.getYaw());
+		tag.putFloat("antirecoil", instance.getAntiRecoil());
+		tag.putFloat("antiyaw", instance.getAntiYaw());
+		
 		return tag;
 	
 	}
@@ -27,6 +33,10 @@ public class GunInfoStorage implements IStorage<GunInfo> {
 		instance.setReload(tag.getInt("reload"));
 		instance.setReloading(tag.getBoolean("reloading"));
 		
+		instance.setRecoil(tag.getFloat("recoil"),
+				tag.getFloat("yaw"),
+				tag.getFloat("antiyaw"),
+				tag.getFloat("antirecoil"));
 	}
 
 }

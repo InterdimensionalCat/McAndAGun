@@ -25,22 +25,22 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(Dist.CLIENT)
 public class PlayerHandler {
 	
 	@CapabilityInject(GunInfo.class)
 	public static Capability<GunInfo> guninfo = null;
 	
-	public static float yawMod, pitchMod;
-	public static float currentclip;
-	public static float currentreload;
-	public static boolean reloading;
-	public static boolean shouldzoom = false;
+	//public static float yawMod, pitchMod;
+	//public static float currentclip;
+	//public static float currentreload;
+	//public static boolean reloading;
+	//public static boolean shouldzoom = false;
 	
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
 		ClientPlayerEntity player = Minecraft.getInstance().player;
 		if(player == null) return;
@@ -69,14 +69,7 @@ public class PlayerHandler {
 				//}
 				
 				
-				 Integer zoomfactor = EnchantmentHelper.getEnchantments(player.getHeldItemMainhand()).get(RegisterItems.Zoom);
-			        if(zoomfactor != null) {
-			        	if(Minecraft.getInstance().gameSettings.keyBindAttack.isPressed()) {
-			        		shouldzoom = !shouldzoom;
-			        	}
-			        } else {
-			        	shouldzoom = false;
-			        }
+				 
 				
 				//fire on initial press only
 				
@@ -96,8 +89,24 @@ public class PlayerHandler {
 	@SubscribeEvent
 	public static void onRenderTick(TickEvent.RenderTickEvent event) {
 		ClientPlayerEntity player = Minecraft.getInstance().player;
-		if(player == null) return;
-		player.rotateTowards(yawMod, pitchMod);
+		if (player == null) return;
+		if (player.getHeldItemMainhand() != null) {
+			if (player.getHeldItemMainhand().getItem() instanceof ItemGun) {
+			}
+
+			ItemStack stack = player.getHeldItemMainhand();
+			GunInfo data = stack.getCapability(guninfo).orElse(null);
+			if(data != null) {
+				
+				float modyaw = data.getYaw()* 0.7f + data.getAntiYaw()* 0.05f;
+				float modpitch =data.getRecoil()* 0.7f + data.getAntiRecoil()* 0.05f;
+				
+				System.out.println(modyaw + " " + modpitch);
+				
+				player.rotateTowards(modyaw, modpitch);
+			}
+		}
+
 	}
 
 	
@@ -109,8 +118,12 @@ public class PlayerHandler {
     	if(player == null) return;
 		if(player.getHeldItemMainhand() != null) {
 			if(player.getHeldItemMainhand().getItem() instanceof ItemGun) {
-				 Integer zoomfactor = EnchantmentHelper.getEnchantments(player.getHeldItemMainhand()).get(RegisterItems.Zoom);
-			        if(zoomfactor != null && shouldzoom) {
+				
+				ItemStack stack = player.getHeldItemMainhand();
+				GunInfo data = stack.getCapability(guninfo).orElseThrow(IllegalStateException::new);
+				
+				 Integer zoomfactor = EnchantmentHelper.getEnchantments(stack).get(RegisterItems.Zoom);
+			        if(zoomfactor != null && data.getZoom()) {
 			        	event.setNewfov(1.0f - 0.2f * zoomfactor.floatValue());
 			        }
 			}
@@ -131,13 +144,16 @@ public class PlayerHandler {
 				
 				ItemGun gun = (ItemGun)(player.getHeldItemMainhand().getItem());
 				
+				ItemStack stack = player.getHeldItemMainhand();
+				GunInfo data = stack.getCapability(guninfo).orElseThrow(IllegalStateException::new);
+				
 		        int width = mc.getMainWindow().getScaledWidth();
 		        int height = mc.getMainWindow().getScaledHeight();
 		        
 		        //float sf = (float)mc.getMainWindow().getGuiScaleFactor();
 		        
 		        Integer zoomfactor = EnchantmentHelper.getEnchantments(player.getHeldItemMainhand()).get(RegisterItems.Zoom);
-		        if(zoomfactor != null && shouldzoom) {
+		        if(zoomfactor != null && data.getZoom()) {
 		            RenderSystem.disableDepthTest();
 		            RenderSystem.depthMask(false);
 		            
@@ -211,7 +227,7 @@ public class PlayerHandler {
 		            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		        }
 				
-				if(!reloading) {
+				if(!data.isReloading()) {
 			 
 			       //mc.fontRenderer.drawStringWithShadow("Clip: 20/20", width - 160, height - 40, Integer.parseInt("FFAA00", 16));
 					
@@ -226,7 +242,7 @@ public class PlayerHandler {
 			    	MatrixStack matrixstack = new MatrixStack();
 			        matrixstack.translate(0.0D, 0.0D, (double)(0 + 200.0F));
 			        IRenderTypeBuffer.Impl irendertypebuffer$impl = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
-			        String s = "Clip: " + (int)currentclip + "/" + clipSize;
+			        String s = "Clip: " + (int)data.getClip() + "/" + clipSize;
 			        mc.fontRenderer.renderString(s, 
 			        		(float)(width - (float)(mc.fontRenderer.getStringWidth(s))) / 2.0F + 55, (float)(height - 35 - (float)(mc.fontRenderer.FONT_HEIGHT) / 2.0F), 
 			        		Integer.parseInt("FFAA00", 16), true, matrixstack.getLast().getMatrix(), irendertypebuffer$impl, true, 0, 15728880);
@@ -249,7 +265,7 @@ public class PlayerHandler {
 						reloadTime = gun.reloadTime;
 					}
 					
-					int percent = (int)(100 - Math.ceil((float)currentreload / (float)reloadTime * 100));
+					int percent = (int)(100 - Math.ceil((float)data.getReload() / (float)reloadTime * 100));
 					int color = 0;
 					for(int i = 0; i < 3; i++) {
 						if(percent < 50) {
@@ -280,8 +296,6 @@ public class PlayerHandler {
 			}
 		}
 		
-	    pitchMod = 0;
-	    yawMod = 0;
 	}
 
 }

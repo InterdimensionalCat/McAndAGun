@@ -20,6 +20,13 @@ public class GunInfoSyncMsg {
 		sync = buf.readCompoundTag();
 	}
 	
+	//public int currentClip;
+	//public int currentReload;
+	//public float recoil, yawRecoil, antiYaw, antiRecoil;
+	//public boolean reloading;
+	//public int cooldown;
+	
+	
 	public GunInfoSyncMsg(GunInfo data) {
 		if(sync == null) {
 			sync = new CompoundNBT();
@@ -27,6 +34,10 @@ public class GunInfoSyncMsg {
 		sync.putInt("clip", data.getClip());
 		sync.putInt("reload", data.getReload());
 		sync.putBoolean("reloading", data.isReloading());
+		sync.putFloat("recoil", data.getRecoil());
+		sync.putFloat("yaw", data.getYaw());
+		sync.putFloat("antirecoil", data.getAntiRecoil());
+		sync.putFloat("antiyaw", data.getAntiYaw());
 	}
 	
     public void encode(PacketBuffer buf) {
@@ -56,6 +67,11 @@ public class GunInfoSyncMsg {
     				data.setClip(sync.getInt("clip"));
     				data.setReload(sync.getInt("reload"));
     				data.setReloading(sync.getBoolean("reloading"));
+    				
+    				data.setRecoil(sync.getFloat("recoil"),
+    						sync.getFloat("yaw"),
+    						sync.getFloat("antiyaw"),
+    						sync.getFloat("antirecoil"));
     			}
     		}
     	}

@@ -32,7 +32,7 @@ public class GunInfoProvider implements GunInfo, ICapabilitySerializable<INBT> {
 	@Override
 	public INBT serializeNBT() {
 		
-		System.out.println("Serializing NBT");
+		//.out.println("Serializing NBT");
 		
 		INBT nbt = guninfo.getStorage().writeNBT(guninfo, this.instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!")), null);
 //		if(owner.hasTag()) {
@@ -47,7 +47,7 @@ public class GunInfoProvider implements GunInfo, ICapabilitySerializable<INBT> {
 	@Override
 	public void deserializeNBT(INBT nbt) {
 		
-		System.out.println("Deserializing NBT");
+		//System.out.println("Deserializing NBT");
 		
 			guninfo.getStorage().readNBT(guninfo, this.instance.orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!")), null, nbt);
 	}
@@ -57,6 +57,8 @@ public class GunInfoProvider implements GunInfo, ICapabilitySerializable<INBT> {
 	public float recoil, yawRecoil, antiYaw, antiRecoil;
 	public boolean reloading;
 	public int cooldown;
+	
+	public boolean zooming = false;
 
 	public void setClip(int clip) {
 		currentClip = clip;
@@ -123,6 +125,17 @@ public class GunInfoProvider implements GunInfo, ICapabilitySerializable<INBT> {
 	@Override
 	public int getCooldown() {
 		return cooldown;
+	}
+
+	@Override
+	public void setZoom(boolean zoom) {
+		zooming = zoom;
+		
+	}
+
+	@Override
+	public boolean getZoom() {
+		return zooming;
 	}
 
 }

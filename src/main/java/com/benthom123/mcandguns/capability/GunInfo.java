@@ -16,6 +16,9 @@ public interface GunInfo {
 	public boolean isReloading();
 	public int getCooldown();
 	
+	public void setZoom(boolean zoom);
+	public boolean getZoom();
+	
 }
 
 

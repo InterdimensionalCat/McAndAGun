@@ -2,14 +2,18 @@ package com.benthom123.mcandguns.item;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.benthom123.mcandguns.McAndGuns;
 import com.benthom123.mcandguns.RegisterItems;
 import com.benthom123.mcandguns.capability.GunInfo;
+import com.benthom123.mcandguns.capability.GunInfoProvider;
 import com.benthom123.mcandguns.common.GunInfoSyncMsg;
 import com.benthom123.mcandguns.common.PacketHandler;
 import com.benthom123.mcandguns.common.RecoilMsg;
 import com.benthom123.mcandguns.entity.EntityBullet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -18,12 +22,14 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.SoundCategory;
@@ -96,6 +102,7 @@ public class ItemGun extends Item {
 			
 			//server stuff
 			if(render) {
+				render = false;
 				if(shoot(data)) {
 					playFireSound(entityIn, worldIn);
 					spawnProjectile(entityIn, worldIn, stack);
@@ -126,9 +133,26 @@ public class ItemGun extends Item {
 		} else {
 			//client stuff
 			
+			if(!isSelected) {
+				return;
+			}
 			
+			GunInfo data = stack.getCapability(guninfo).orElse(null);
+			if(data != null) {
+				
+				Integer zoomfactor = EnchantmentHelper.getEnchantments(stack).get(RegisterItems.Zoom);
+		        if(zoomfactor != null) {
+		        	if(Minecraft.getInstance().gameSettings.keyBindAttack.isPressed()) {
+		        		data.setZoom(true);
+		        	}
+		        } else {
+		        	data.setZoom(false);
+		        }
+				
+			} 
 		}
 	}
+	
 	
 	//determines if gun can successfully fire, and fires if it can
 	boolean shoot(GunInfo data) {
@@ -217,18 +241,59 @@ public class ItemGun extends Item {
 	//changes recoil in onUpdate
 	public void updateRecoil(ServerPlayerEntity entityIn, GunInfo data) {
 		
-		RecoilMsg msg = new RecoilMsg(data.getYaw() * 0.7f +  data.getAntiYaw() * 0.05f, 
-				data.getRecoil() * 0.7f +  data.getAntiRecoil() * 0.05f, data.getClip(), data.getReload(), data.isReloading());
 		
-		PacketHandler.INSTANCE.sendTo(msg,entityIn.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+		//data.setRecoil(data.getRecoil() * 0.7f, data.getYaw() * 0.7f, data.getAntiYaw() * 0.05f, data.getAntiRecoil() * 0.05f);
+		
+//		RecoilMsg msg = new RecoilMsg(data.getYaw() * 0.7f +  data.getAntiYaw() * 0.05f, 
+//				data.getRecoil() * 0.7f +  data.getAntiRecoil() * 0.05f, data.getClip(), data.getReload(), data.isReloading());
+		
+//		PacketHandler.INSTANCE.sendTo(msg,entityIn.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
 		
 		
+		
+//		data.setRecoil(
+//				data.getRecoil() * 0.4f,
+//				data.getYaw() * 0.4f,
+//				data.getAntiYaw() * 0.95f,
+//				data.getAntiRecoil() * 0.95f);
 		
 		data.setRecoil(
-				data.getRecoil() * 0.4f,
-				data.getYaw() * 0.4f,
-				data.getAntiYaw() * 0.95f,
-				data.getAntiRecoil() * 0.95f);
+		data.getRecoil() * 0.4f,
+		data.getYaw() * 0.4f,
+		data.getAntiYaw() * 0.95f,
+		data.getAntiRecoil() * 0.95f);
+		
+		if(data.getRecoil() < 0.1f) {
+			data.setRecoil(
+					0,
+					data.getYaw(),
+					data.getAntiYaw(),
+					data.getAntiRecoil());
+		}
+		
+		if(data.getYaw() < 0.1f) {
+			data.setRecoil(
+					data.getRecoil(),
+					0,
+					data.getAntiYaw(),
+					data.getAntiRecoil());
+		}
+		
+		if(data.getAntiYaw() < 0.1f) {
+			data.setRecoil(
+					data.getRecoil(),
+					data.getYaw(),
+					0,
+					data.getAntiRecoil());
+		}
+		
+		if(data.getAntiRecoil() < 0.1f) {
+			data.setRecoil(
+					data.getRecoil(),
+					data.getYaw(),
+					data.getAntiYaw(),
+					0);
+		}
 	}
 	
 	//add recoil after shot
@@ -254,16 +319,16 @@ public class ItemGun extends Item {
     		data.setRecoil(
     				data.getRecoil() - pitchApply,
     				data.getYaw() + yawApply,
-    				data.getAntiYaw() - yawApply,
-    				data.getAntiRecoil() + pitchApply);
+    				data.getAntiYaw() - yawApply * 0.4f,
+    				data.getAntiRecoil() + pitchApply * 0.4f);
     		
     	} else {
     		
     		data.setRecoil(
     				data.getRecoil() - pitchApply,
     				data.getYaw() - yawApply,
-    				data.getAntiYaw() + yawApply,
-    				data.getAntiRecoil() + pitchApply);
+    				data.getAntiYaw() + yawApply * 0.4f,
+    				data.getAntiRecoil() + pitchApply * 0.4f);
     	}
     	
 	}
@@ -346,5 +411,11 @@ public class ItemGun extends Item {
 
          return player.abilities.isCreativeMode;
 	}	
+	
+	@Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt)
+    {
+		return new GunInfoProvider();
+    }
 	
 }
