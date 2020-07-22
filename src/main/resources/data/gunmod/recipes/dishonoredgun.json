@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "iri",
+        " gi",
+        "   "
+    ],
+    "key":
+    {
+        "i":
+        {
+            "item": "minecraft:iron_ingot"
+        },
+        "g":
+        {
+            "item": "minecraft:gunpowder"
+        },
+        "r":
+        {
+            "item": "minecraft:redstone"
+        }
+    },
+    "result":
+    {
+        "item": "mcandguns:dishonoredgun",
+        "count": 1
+    }
+}

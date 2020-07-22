@@ -1,0 +1,34 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "iiw",
+        " gw",
+        "   "
+    ],
+    "key":
+    {
+        "i":
+        {
+            "item": "minecraft:iron_ingot"
+        },
+        "g":
+        {
+            "item": "minecraft:gunpowder"
+        },
+        "w":
+        [
+        {
+        "item": "minecraft:oak_planks"
+        },
+        {
+        "item": "minecraft:spruce_planks"
+        }
+        ]
+    },
+    "result":
+    {
+        "item": "mcandguns:rifle",
+        "count": 1
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "b  ",
+        "sb ",
+        "  b"
+    ],
+    "key":
+    {
+        "b":
+        {
+            "item": "minecraft:bamboo"
+        },
+        "s":
+        {
+            "item": "minecraft:string"
+        }
+    },
+    "result":
+    {
+        "item": "mcandguns:bamboogun",
+        "count": 1
+    }
+}

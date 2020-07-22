@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        " p ",
+        " b ",
+        " b "
+    ],
+    "key":
+    {
+        "p":
+        {
+            "item": "minecraft:poisonous_potato"
+        },
+        "b":
+        {
+            "item": "minecraft:bamboo"
+        }
+    },
+    "result":
+    {
+        "item": "mcandguns:poisondart",
+        "count": 16
+    }
+}

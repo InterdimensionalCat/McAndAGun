@@ -1,0 +1,38 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "iiw",
+        "igw",
+        "ir "
+    ],
+    "key":
+    {
+        "i":
+        {
+            "item": "minecraft:iron_ingot"
+        },
+        "g":
+        {
+            "item": "minecraft:gunpowder"
+        },
+        "r":
+        {
+            "item": "minecraft:redstone"
+        },
+        "w":
+        [
+        {
+        "item": "minecraft:oak_planks"
+        },
+        {
+        "item": "minecraft:spruce_planks"
+        }
+        ]
+    },
+    "result":
+    {
+        "item": "mcandguns:tommy",
+        "count": 1
+    }
+}

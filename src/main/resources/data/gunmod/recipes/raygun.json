@@ -1,0 +1,33 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "irr",
+        " dg",
+        "  i"
+    ],
+    "key":
+    {
+        "i":
+        {
+            "item": "minecraft:iron_ingot"
+        },
+        "g":
+        {
+            "item": "minecraft:nether_star"
+        },
+        "d":
+        {
+            "item": "minecraft:diamond_block"
+        },
+        "r":
+        {
+            "item": "minecraft:redstone"
+        }
+    },
+    "result":
+    {
+        "item": "mcandguns:raygun",
+        "count": 1
+    }
+}
