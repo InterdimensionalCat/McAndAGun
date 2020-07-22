@@ -5,6 +5,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -28,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import com.benthom123.mcandguns.capability.GunInfo;
 import com.benthom123.mcandguns.capability.GunInfoProvider;
 import com.benthom123.mcandguns.capability.GunInfoStorage;
+import com.benthom123.mcandguns.client.StaticClientEventHandler;
 import com.benthom123.mcandguns.common.BooleanMsg;
 import com.benthom123.mcandguns.common.GunInfoSyncMsg;
 import com.benthom123.mcandguns.common.PacketHandler;
@@ -70,7 +73,8 @@ public class McAndGuns
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+      //  FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(StaticClientEventHandler::RegisterCustomEntityRender);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -94,16 +98,11 @@ public class McAndGuns
         ObfuscationReflectionHelper.setPrivateValue(Enchantment.class, Enchantments.LOOTING, com.benthom123.mcandguns.enchantment.FMJ.LOOTMOD, "field_77351_y");
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        // do something that can only be done on the client
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
-        
-        //RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, renderManager -> new SpriteRenderer<EntityBullet>(renderManager, Minecraft.getInstance().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(RegisterItems.entitybullet, renderManager -> new RenderBullet<EntityBullet>(renderManager));
-        RenderingRegistry.registerEntityRenderingHandler(RegisterItems.entitydart, renderManager -> new RenderDart<EntityDart>(renderManager));
-        RenderingRegistry.registerEntityRenderingHandler(RegisterItems.entityray, renderManager -> new RenderRay<EntityRay>(renderManager));
-        RenderingRegistry.registerEntityRenderingHandler(RegisterItems.entitydishoneredbullet, renderManager -> new RenderDishonoredBullet<EntityDishonoredBullet>(renderManager));
-    }
+//    private void doClientStuff(final FMLClientSetupEvent event) {
+//        // do something that can only be done on the client
+//        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+//        
+//    }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
