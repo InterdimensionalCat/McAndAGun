@@ -116,9 +116,9 @@ public class ItemGun extends Item {
 			data.setReloading(updateReload(data));
 			updateRecoil((ServerPlayerEntity)entityIn, data);
 			if(data != null) {
-				GunInfoSyncMsg msg = new GunInfoSyncMsg(data);
+				//GunInfoSyncMsg msg = new GunInfoSyncMsg(data);
 				
-				PacketHandler.INSTANCE.sendTo(msg,((ServerPlayerEntity)entityIn).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+				//PacketHandler.INSTANCE.sendTo(msg,((ServerPlayerEntity)entityIn).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
 			}
 			
 			

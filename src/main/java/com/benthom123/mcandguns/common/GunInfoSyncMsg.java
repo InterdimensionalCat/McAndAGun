@@ -22,11 +22,6 @@ public class GunInfoSyncMsg {
 		sync = buf.readCompoundTag();
 	}
 	
-	//public int currentClip;
-	//public int currentReload;
-	//public float recoil, yawRecoil, antiYaw, antiRecoil;
-	//public boolean reloading;
-	//public int cooldown;
 	
 	
 	public GunInfoSyncMsg(GunInfo data) {
