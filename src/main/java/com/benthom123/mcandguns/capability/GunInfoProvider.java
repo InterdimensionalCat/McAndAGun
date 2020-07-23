@@ -1,7 +1,5 @@
 package com.benthom123.mcandguns.capability;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -10,7 +8,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class GunInfoProvider implements GunInfo, ICapabilitySerializable<INBT> {
-
+	
 	@CapabilityInject(GunInfo.class)
 	public static Capability<GunInfo> guninfo = null;
 	

@@ -3,7 +3,6 @@ package com.benthom123.mcandguns.entity;
 import com.benthom123.mcandguns.RegisterItems;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
@@ -19,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EntityDart extends AbstractGunEntity implements EntityType.IFactory<EntityDart> {
+public class EntityDart extends AbstractGunEntity {
 	
 	
 
@@ -29,10 +28,6 @@ public class EntityDart extends AbstractGunEntity implements EntityType.IFactory
 
 	}
 
-	public EntityDart(int range, float damage, float knockback, Vector3d position, float yaw, float pitch, float pyaw,
-			float ppitch) {
-		super(RegisterItems.entitydart, range, damage, knockback, position, yaw, pitch, pyaw, ppitch);
-	}
 
 	public EntityDart(FMLPlayMessages.SpawnEntity entity, World worldIn) {
 		super(RegisterItems.entitydart, worldIn);
@@ -84,11 +79,6 @@ public class EntityDart extends AbstractGunEntity implements EntityType.IFactory
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
-	@Override
-	public EntityDart create(EntityType<EntityDart> p_create_1_, World p_create_2_) {
-		return new EntityDart(range, damage, knockback, new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ()), this.rotationYaw,
-				this.rotationPitch, this.prevRotationYaw, this.prevRotationPitch);
-	}
 	
 	@Override
 	protected Item getDefaultItem() {

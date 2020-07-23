@@ -1,6 +1,5 @@
 package com.benthom123.mcandguns.entity;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
@@ -54,20 +53,6 @@ public abstract class AbstractGunEntity extends ProjectileItemEntity {
 		this.prevRotationPitch = this.rotationPitch;
 	}
 
-	// constructor that gets called client side to set everything
-	public AbstractGunEntity(EntityType<? extends ProjectileItemEntity> type, int range, float damage, float knockback, Vector3d position,
-			float yaw, float pitch, float pyaw, float ppitch) {
-		super(type, Minecraft.getInstance().player.world);
-		this.shooter = Minecraft.getInstance().player;
-		this.range = range;
-		this.damage = damage;
-		this.knockback =knockback;
-		this.setPosition(position.x, position.y, position.z);
-		this.rotationYaw = yaw;
-		this.rotationPitch = pitch;
-		this.prevRotationYaw = pyaw;
-		this.prevRotationPitch = ppitch;
-	}
 	
 	public AbstractGunEntity(EntityType<? extends ProjectileItemEntity> type, World worldIn) {
 		super(type, worldIn);

@@ -3,7 +3,6 @@ package com.benthom123.mcandguns.entity;
 import com.benthom123.mcandguns.RegisterItems;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 
-public class EntityDishonoredBullet extends AbstractGunEntity implements EntityType.IFactory<EntityDishonoredBullet> {
+public class EntityDishonoredBullet extends AbstractGunEntity {
 
 	
 	
@@ -28,10 +27,6 @@ public class EntityDishonoredBullet extends AbstractGunEntity implements EntityT
 
 	}
 	
-	public EntityDishonoredBullet(int range, float damage, float knockback, Vector3d position,
-			float yaw, float pitch, float pyaw, float ppitch) {
-		super(RegisterItems.entitydishoneredbullet, range, damage, knockback, position, yaw, pitch, pyaw, ppitch);
-	}
 	
 	   public EntityDishonoredBullet(FMLPlayMessages.SpawnEntity entity, World worldIn) {
 		   super(RegisterItems.entitydishoneredbullet, worldIn); 
@@ -93,12 +88,6 @@ public class EntityDishonoredBullet extends AbstractGunEntity implements EntityT
 	}
 
 
-
-	@Override
-	public EntityDishonoredBullet create(EntityType<EntityDishonoredBullet> p_create_1_, World p_create_2_) {
-		return new EntityDishonoredBullet(range, damage, knockback, new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ()), 
-				this.rotationYaw, this.rotationPitch, this.prevRotationYaw, this.prevRotationPitch);
-	}
 
 	@Override
 	protected Item getDefaultItem() {

@@ -10,10 +10,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,7 +30,6 @@ import net.minecraft.util.ResourceLocation;
 public class PlayerHandler {
 	
 	@CapabilityInject(GunInfo.class)
-	public static Capability<GunInfo> guninfo = null;
 	
 	//public static float yawMod, pitchMod;
 	//public static float currentclip;
@@ -95,13 +92,13 @@ public class PlayerHandler {
 			}
 
 			ItemStack stack = player.getHeldItemMainhand();
-			GunInfo data = stack.getCapability(guninfo).orElse(null);
+			GunInfo data = stack.getCapability(McAndGuns.guninfo).orElse(null);
 			if(data != null) {
 				
 				float modyaw = data.getYaw()* 0.7f + data.getAntiYaw()* 0.05f;
 				float modpitch =data.getRecoil()* 0.7f + data.getAntiRecoil()* 0.05f;
 				
-				System.out.println(modyaw + " " + modpitch);
+				//System.out.println(modyaw + " " + modpitch);
 				
 				player.rotateTowards(modyaw, modpitch);
 			}
@@ -120,7 +117,7 @@ public class PlayerHandler {
 			if(player.getHeldItemMainhand().getItem() instanceof ItemGun) {
 				
 				ItemStack stack = player.getHeldItemMainhand();
-				GunInfo data = stack.getCapability(guninfo).orElseThrow(IllegalStateException::new);
+				GunInfo data = stack.getCapability(McAndGuns.guninfo).orElseThrow(IllegalStateException::new);
 				
 				 Integer zoomfactor = EnchantmentHelper.getEnchantments(stack).get(RegisterItems.Zoom);
 			        if(zoomfactor != null && data.getZoom()) {
@@ -131,7 +128,8 @@ public class PlayerHandler {
 		
 	}
 	
-    @SubscribeEvent
+    @SuppressWarnings("deprecation")
+	@SubscribeEvent
 	public static void onInitGuiEvent(final RenderGameOverlayEvent.Post event) {
     	Minecraft mc = Minecraft.getInstance();
     	
@@ -145,7 +143,7 @@ public class PlayerHandler {
 				ItemGun gun = (ItemGun)(player.getHeldItemMainhand().getItem());
 				
 				ItemStack stack = player.getHeldItemMainhand();
-				GunInfo data = stack.getCapability(guninfo).orElseThrow(IllegalStateException::new);
+				GunInfo data = stack.getCapability(McAndGuns.guninfo).orElseThrow(IllegalStateException::new);
 				
 		        int width = mc.getMainWindow().getScaledWidth();
 		        int height = mc.getMainWindow().getScaledHeight();

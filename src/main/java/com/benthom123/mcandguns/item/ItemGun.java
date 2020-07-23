@@ -2,7 +2,6 @@ package com.benthom123.mcandguns.item;
 
 import java.util.Random;
 
-import javax.annotation.Nullable;
 
 import com.benthom123.mcandguns.McAndGuns;
 import com.benthom123.mcandguns.RegisterItems;
@@ -10,7 +9,6 @@ import com.benthom123.mcandguns.capability.GunInfo;
 import com.benthom123.mcandguns.capability.GunInfoProvider;
 import com.benthom123.mcandguns.common.GunInfoSyncMsg;
 import com.benthom123.mcandguns.common.PacketHandler;
-import com.benthom123.mcandguns.common.RecoilMsg;
 import com.benthom123.mcandguns.entity.EntityBullet;
 
 import net.minecraft.client.Minecraft;
@@ -27,8 +25,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraft.util.SoundEvents;
@@ -36,10 +32,6 @@ import net.minecraft.util.SoundCategory;
 
 
 public class ItemGun extends Item {
-	
-	//static reference to the underlying capability
-	@CapabilityInject(GunInfo.class)
-	public static Capability<GunInfo> guninfo = null;
 
 	//general variables
 	private String name = "rifle";
@@ -91,7 +83,7 @@ public class ItemGun extends Item {
 		
 		if(!worldIn.isRemote()) {
 			
-			GunInfo data = stack.getCapability(guninfo).orElseThrow(IllegalStateException::new);
+			GunInfo data = stack.getCapability(McAndGuns.guninfo).orElseThrow(IllegalStateException::new);
 			
 			
 			if(!isSelected) {
@@ -137,7 +129,7 @@ public class ItemGun extends Item {
 				return;
 			}
 			
-			GunInfo data = stack.getCapability(guninfo).orElse(null);
+			GunInfo data = stack.getCapability(McAndGuns.guninfo).orElse(null);
 			if(data != null) {
 				
 				Integer zoomfactor = EnchantmentHelper.getEnchantments(stack).get(RegisterItems.Zoom);
@@ -262,38 +254,38 @@ public class ItemGun extends Item {
 		data.getYaw() * 0.4f,
 		data.getAntiYaw() * 0.95f,
 		data.getAntiRecoil() * 0.95f);
-		
-		if(data.getRecoil() < 0.1f) {
-			data.setRecoil(
-					0,
-					data.getYaw(),
-					data.getAntiYaw(),
-					data.getAntiRecoil());
-		}
-		
-		if(data.getYaw() < 0.1f) {
-			data.setRecoil(
-					data.getRecoil(),
-					0,
-					data.getAntiYaw(),
-					data.getAntiRecoil());
-		}
-		
-		if(data.getAntiYaw() < 0.1f) {
-			data.setRecoil(
-					data.getRecoil(),
-					data.getYaw(),
-					0,
-					data.getAntiRecoil());
-		}
-		
-		if(data.getAntiRecoil() < 0.1f) {
-			data.setRecoil(
-					data.getRecoil(),
-					data.getYaw(),
-					data.getAntiYaw(),
-					0);
-		}
+//		
+//		if(data.getRecoil() < 0.1f) {
+//			data.setRecoil(
+//					0,
+//					data.getYaw(),
+//					data.getAntiYaw(),
+//					data.getAntiRecoil());
+//		}
+//		
+//		if(data.getYaw() < 0.1f) {
+//			data.setRecoil(
+//					data.getRecoil(),
+//					0,
+//					data.getAntiYaw(),
+//					data.getAntiRecoil());
+//		}
+//		
+//		if(data.getAntiYaw() < 0.1f) {
+//			data.setRecoil(
+//					data.getRecoil(),
+//					data.getYaw(),
+//					0,
+//					data.getAntiRecoil());
+//		}
+//		
+//		if(data.getAntiRecoil() < 0.1f) {
+//			data.setRecoil(
+//					data.getRecoil(),
+//					data.getYaw(),
+//					data.getAntiYaw(),
+//					0);
+//		}
 	}
 	
 	//add recoil after shot

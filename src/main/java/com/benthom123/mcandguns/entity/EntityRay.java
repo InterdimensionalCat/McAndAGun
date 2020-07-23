@@ -5,7 +5,6 @@ import java.util.List;
 import com.benthom123.mcandguns.RegisterItems;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
@@ -21,7 +20,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EntityRay extends AbstractGunEntity implements EntityType.IFactory<EntityRay>  {
+public class EntityRay extends AbstractGunEntity  {
 	
 	
 	public EntityRay(World worldIn, LivingEntity shooter, float velocity, float inaccuracy, float damage,
@@ -30,10 +29,6 @@ public class EntityRay extends AbstractGunEntity implements EntityType.IFactory<
 
 	}
 	
-	public EntityRay(int range, float damage, float knockback, Vector3d position,
-			float yaw, float pitch, float pyaw, float ppitch) {
-		super(RegisterItems.entityray, range, damage, knockback, position, yaw, pitch, pyaw, ppitch);
-	}
 	
 	   public EntityRay(FMLPlayMessages.SpawnEntity entity, World worldIn) {
 		   super(RegisterItems.entityray, worldIn); 
@@ -129,13 +124,6 @@ public class EntityRay extends AbstractGunEntity implements EntityType.IFactory<
 		return true;
 	}
 
-
-
-	@Override
-	public EntityRay create(EntityType<EntityRay> p_create_1_, World p_create_2_) {
-		return new EntityRay(range, damage, knockback, new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ()), 
-				this.rotationYaw, this.rotationPitch, this.prevRotationYaw, this.prevRotationPitch);
-	}
 
 	@Override
 	protected Item getDefaultItem() {

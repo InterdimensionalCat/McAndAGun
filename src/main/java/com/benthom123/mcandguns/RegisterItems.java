@@ -1,7 +1,6 @@
 package com.benthom123.mcandguns;
 
 
-import com.benthom123.mcandguns.client.StaticClientEventHandler;
 import com.benthom123.mcandguns.enchantment.*;
 import com.benthom123.mcandguns.entity.EntityBullet;
 import com.benthom123.mcandguns.entity.EntityDart;
@@ -10,7 +9,6 @@ import com.benthom123.mcandguns.entity.EntityRay;
 import com.benthom123.mcandguns.item.*;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -20,8 +18,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ObjectHolder;
 
 /**

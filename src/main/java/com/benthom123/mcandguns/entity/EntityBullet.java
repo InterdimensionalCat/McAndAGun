@@ -3,7 +3,6 @@ package com.benthom123.mcandguns.entity;
 import com.benthom123.mcandguns.RegisterItems;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.IPacket;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 
-public class EntityBullet extends AbstractGunEntity implements EntityType.IFactory<EntityBullet> {
+public class EntityBullet extends AbstractGunEntity {
 
 	
 	
@@ -26,11 +25,6 @@ public class EntityBullet extends AbstractGunEntity implements EntityType.IFacto
 			float knockback, int range) {
 		super(RegisterItems.entitybullet, worldIn, shooter, velocity, inaccuracy, damage, knockback, range);
 
-	}
-	
-	public EntityBullet(int range, float damage, float knockback, Vector3d position,
-			float yaw, float pitch, float pyaw, float ppitch) {
-		super(RegisterItems.entitybullet, range, damage, knockback, position, yaw, pitch, pyaw, ppitch);
 	}
 	
 	   public EntityBullet(FMLPlayMessages.SpawnEntity entity, World worldIn) {
@@ -85,11 +79,6 @@ public class EntityBullet extends AbstractGunEntity implements EntityType.IFacto
 
 
 
-	@Override
-	public EntityBullet create(EntityType<EntityBullet> p_create_1_, World p_create_2_) {
-		return new EntityBullet(range, damage, knockback, new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ()), 
-				this.rotationYaw, this.rotationPitch, this.prevRotationYaw, this.prevRotationPitch);
-	}
 
 	@Override
 	protected Item getDefaultItem() {

@@ -4,9 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -15,10 +13,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -35,16 +31,6 @@ import com.benthom123.mcandguns.client.StaticClientEventHandler;
 import com.benthom123.mcandguns.common.BooleanMsg;
 import com.benthom123.mcandguns.common.GunInfoSyncMsg;
 import com.benthom123.mcandguns.common.PacketHandler;
-import com.benthom123.mcandguns.common.RecoilMsg;
-import com.benthom123.mcandguns.entity.EntityBullet;
-import com.benthom123.mcandguns.entity.EntityDart;
-import com.benthom123.mcandguns.entity.EntityDishonoredBullet;
-import com.benthom123.mcandguns.entity.EntityRay;
-import com.benthom123.mcandguns.entity.RenderBullet;
-import com.benthom123.mcandguns.entity.RenderDart;
-import com.benthom123.mcandguns.entity.RenderDishonoredBullet;
-import com.benthom123.mcandguns.entity.RenderRay;
-import com.benthom123.mcandguns.item.*;
 
 
 import java.util.stream.Collectors;
@@ -66,7 +52,8 @@ public class McAndGuns
 	public static Capability<GunInfo> guninfo = null;
     
 
-    public McAndGuns() {
+    @SuppressWarnings("deprecation")
+	public McAndGuns() {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -95,7 +82,6 @@ public class McAndGuns
         //register packet messages
         
         PacketHandler.INSTANCE.registerMessage(0, BooleanMsg.class, BooleanMsg::encode, BooleanMsg::new, BooleanMsg::handle);
-        PacketHandler.INSTANCE.registerMessage(1, RecoilMsg.class, RecoilMsg::encode, RecoilMsg::new, RecoilMsg::handle);  
         PacketHandler.INSTANCE.registerMessage(2, GunInfoSyncMsg.class, GunInfoSyncMsg::encode, GunInfoSyncMsg::new, GunInfoSyncMsg::handle);
       //  CapabilityManager.INSTANCE.register(GunInfo.class, new GunInfoStorage(), () -> new GunInfoProvider(new ItemStack(RegisterItems.gun)));
         CapabilityManager.INSTANCE.register(GunInfo.class, new GunInfoStorage(), () -> new GunInfoProvider());
