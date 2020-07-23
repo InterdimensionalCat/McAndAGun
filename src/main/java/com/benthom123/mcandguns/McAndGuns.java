@@ -13,6 +13,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -74,6 +75,11 @@ public class McAndGuns
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         // Register the doClientStuff method for modloading
       //  FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        
+        DistExecutor.runWhenOn(Dist.CLIENT, 
+        		() -> () -> {FMLJavaModLoadingContext.get().getModEventBus()
+        		.addListener(StaticClientEventHandler::RegisterCustomEntityRender);});
+        
         //FMLJavaModLoadingContext.get().getModEventBus().addListener(StaticClientEventHandler::RegisterCustomEntityRender);
 
         // Register ourselves for server and other game events we are interested in

@@ -5,8 +5,6 @@ import java.util.function.Supplier;
 import com.benthom123.mcandguns.capability.GunInfo;
 import com.benthom123.mcandguns.item.ItemGun;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -45,7 +43,7 @@ public class GunInfoSyncMsg {
     }
 
     public void handle(Supplier<NetworkEvent.Context> context) {
-    	context.get().enqueueWork(new SyncHandler(sync));
+    	context.get().enqueueWork(new SyncHandler(sync, context.get().getSender()));
     	context.get().setPacketHandled(true);
     }
     
@@ -53,13 +51,14 @@ public class GunInfoSyncMsg {
     	
     	public CompoundNBT sync;
     	
-    	public SyncHandler(CompoundNBT sync) {
+    	ServerPlayerEntity p;
+    	
+    	public SyncHandler(CompoundNBT sync, ServerPlayerEntity p) {
     		this.sync = sync;
     	}
 
     	@Override
     	public void run() {	
-    		ClientPlayerEntity p = (ClientPlayerEntity)Minecraft.getInstance().player;
     		if(p.getHeldItemMainhand() != null) {
     			if(p.getHeldItemMainhand().getItem() instanceof ItemGun) {
     				ItemStack gun = (p.getHeldItemMainhand());

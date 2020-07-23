@@ -1,6 +1,7 @@
 package com.benthom123.mcandguns;
 
 
+import com.benthom123.mcandguns.client.StaticClientEventHandler;
 import com.benthom123.mcandguns.enchantment.*;
 import com.benthom123.mcandguns.entity.EntityBullet;
 import com.benthom123.mcandguns.entity.EntityDart;
@@ -14,10 +15,13 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ObjectHolder;
 
 /**
@@ -31,9 +35,9 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class RegisterItems {
 	
-	public static final EntityType<EntityBullet> entitybullet=null;
+	public static EntityType<EntityBullet> entitybullet=null;
 	public static EntityType<EntityDishonoredBullet> entitydishoneredbullet=null;
-	public static final EntityType<EntityDart> entitydart = null;
+	public static EntityType<EntityDart> entitydart = null;
 	public static EntityType<EntityRay> entityray = null;
 	
 	public static ItemGun gun = null;
@@ -88,34 +92,57 @@ public class RegisterItems {
 	
     
     
-    @SubscribeEvent
+    @SuppressWarnings("deprecation")
+	@SubscribeEvent
    	public static void RegisterEntities(final RegistryEvent.Register<EntityType<?>> entityRegistryEvent) {
     	
-    	
-    	
-    	entitydishoneredbullet = EntityType.Builder.<EntityDishonoredBullet>create(EntityClassification.MISC)
-    		    .setCustomClientFactory(EntityDishonoredBullet::new)
-    		    .setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f).setTrackingRange(128).setUpdateInterval(1).build("entitydbullet");
-    	
-		entityray = EntityType.Builder.<EntityRay>create(EntityClassification.MISC)
-	    .setCustomClientFactory(EntityRay::new)
-	    .setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f).setTrackingRange(128).setUpdateInterval(1)
-	    .build("entityray");
-    	
-		entityRegistryEvent.getRegistry().registerAll(		    	
-		    EntityType.Builder.<EntityBullet>create(EntityClassification.MISC)
-		    .setCustomClientFactory(EntityBullet::new)
-		    .setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f).setTrackingRange(128).setUpdateInterval(1)
-		    .build("entitybullet").setRegistryName(McAndGuns.MODID, "entitybullet"),
+
 		
-		EntityType.Builder.<EntityDart>create(EntityClassification.MISC)
-	    .setCustomClientFactory(EntityDart::new)
-	    .setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f).setTrackingRange(128).setUpdateInterval(1)
-	    .build("entitydart").setRegistryName(McAndGuns.MODID, "entitydart"),
-	    
-	    entityray.setRegistryName(McAndGuns.MODID, "entityray"),
-	    
-	    entitydishoneredbullet.setRegistryName(McAndGuns.MODID, "entitydbullet")
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+
+			entitybullet = EntityType.Builder.<EntityBullet>create(EntityClassification.MISC)
+					.setCustomClientFactory(EntityBullet::new).setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f)
+					.setTrackingRange(128).setUpdateInterval(1).build("entitybullet");
+
+			entitydart = EntityType.Builder.<EntityDart>create(EntityClassification.MISC)
+					.setCustomClientFactory(EntityDart::new).setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f)
+					.setTrackingRange(128).setUpdateInterval(1).build("entitydart");
+
+			entitydishoneredbullet = EntityType.Builder.<EntityDishonoredBullet>create(EntityClassification.MISC)
+					.setCustomClientFactory(EntityDishonoredBullet::new).setShouldReceiveVelocityUpdates(true)
+					.size(0.25f, 0.25f).setTrackingRange(128).setUpdateInterval(1).build("entitydbullet");
+
+			entityray = EntityType.Builder.<EntityRay>create(EntityClassification.MISC)
+					.setCustomClientFactory(EntityRay::new).setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f)
+					.setTrackingRange(128).setUpdateInterval(1).build("entityray");
+		});
+		
+		DistExecutor.runWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
+
+			entitybullet = EntityType.Builder.<EntityBullet>create(EntityClassification.MISC)
+					.setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f)
+					.setTrackingRange(128).setUpdateInterval(1).build("entitybullet");
+
+			entitydart = EntityType.Builder.<EntityDart>create(EntityClassification.MISC)
+					.setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f)
+					.setTrackingRange(128).setUpdateInterval(1).build("entitydart");
+
+			entitydishoneredbullet = EntityType.Builder.<EntityDishonoredBullet>create(EntityClassification.MISC)
+					.setShouldReceiveVelocityUpdates(true)
+					.size(0.25f, 0.25f).setTrackingRange(128).setUpdateInterval(1).build("entitydbullet");
+
+			entityray = EntityType.Builder.<EntityRay>create(EntityClassification.MISC)
+					.setShouldReceiveVelocityUpdates(true).size(0.25f, 0.25f)
+					.setTrackingRange(128).setUpdateInterval(1).build("entityray");
+		});
+    	
+		entityRegistryEvent.getRegistry().registerAll(entitybullet.setRegistryName(McAndGuns.MODID, "entitybullet"),
+
+				entitydart.setRegistryName(McAndGuns.MODID, "entitydart"),
+
+				entityray.setRegistryName(McAndGuns.MODID, "entityray"),
+
+				entitydishoneredbullet.setRegistryName(McAndGuns.MODID, "entitydbullet")
 
 		);
 	}
