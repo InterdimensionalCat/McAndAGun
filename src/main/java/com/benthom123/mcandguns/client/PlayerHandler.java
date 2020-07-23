@@ -12,7 +12,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,8 +27,6 @@ import net.minecraft.util.ResourceLocation;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class PlayerHandler {
-	
-	@CapabilityInject(GunInfo.class)
 	
 	//public static float yawMod, pitchMod;
 	//public static float currentclip;
